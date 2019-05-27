@@ -30,7 +30,7 @@ public protocol DataResponseSerializerProtocol {
     associatedtype SerializedObject
 
     /// A closure used by response handlers that takes a request, response, data and error and returns a result.
-    var serializeResponse: (URLRequest?, HTTPURLResponse?, Data?, Error?) -> Result<SerializedObject> { get }
+    var serializeResponse: (URLRequest?, HTTPURLResponse?, Data?, Error?) -> AFResult<SerializedObject> { get }
 }
 
 // MARK: -
@@ -41,14 +41,14 @@ public struct DataResponseSerializer<Value>: DataResponseSerializerProtocol {
     public typealias SerializedObject = Value
 
     /// A closure used by response handlers that takes a request, response, data and error and returns a result.
-    public var serializeResponse: (URLRequest?, HTTPURLResponse?, Data?, Error?) -> Result<Value>
+    public var serializeResponse: (URLRequest?, HTTPURLResponse?, Data?, Error?) -> AFResult<Value>
 
     /// Initializes the `ResponseSerializer` instance with the given serialize response closure.
     ///
     /// - parameter serializeResponse: The closure used to serialize the response.
     ///
     /// - returns: The new generic response serializer instance.
-    public init(serializeResponse: @escaping (URLRequest?, HTTPURLResponse?, Data?, Error?) -> Result<Value>) {
+    public init(serializeResponse: @escaping (URLRequest?, HTTPURLResponse?, Data?, Error?) -> AFResult<Value>) {
         self.serializeResponse = serializeResponse
     }
 }
@@ -61,7 +61,7 @@ public protocol DownloadResponseSerializerProtocol {
     associatedtype SerializedObject
 
     /// A closure used by response handlers that takes a request, response, url and error and returns a result.
-    var serializeResponse: (URLRequest?, HTTPURLResponse?, URL?, Error?) -> Result<SerializedObject> { get }
+    var serializeResponse: (URLRequest?, HTTPURLResponse?, URL?, Error?) -> AFResult<SerializedObject> { get }
 }
 
 // MARK: -
@@ -72,14 +72,14 @@ public struct DownloadResponseSerializer<Value>: DownloadResponseSerializerProto
     public typealias SerializedObject = Value
 
     /// A closure used by response handlers that takes a request, response, url and error and returns a result.
-    public var serializeResponse: (URLRequest?, HTTPURLResponse?, URL?, Error?) -> Result<Value>
+    public var serializeResponse: (URLRequest?, HTTPURLResponse?, URL?, Error?) -> AFResult<Value>
 
     /// Initializes the `ResponseSerializer` instance with the given serialize response closure.
     ///
     /// - parameter serializeResponse: The closure used to serialize the response.
     ///
     /// - returns: The new generic response serializer instance.
-    public init(serializeResponse: @escaping (URLRequest?, HTTPURLResponse?, URL?, Error?) -> Result<Value>) {
+    public init(serializeResponse: @escaping (URLRequest?, HTTPURLResponse?, URL?, Error?) -> AFResult<Value>) {
         self.serializeResponse = serializeResponse
     }
 }
@@ -257,7 +257,7 @@ extension Request {
     /// - parameter error:    The error already encountered if it exists.
     ///
     /// - returns: The result data type.
-    public static func serializeResponseData(response: HTTPURLResponse?, data: Data?, error: Error?) -> Result<Data> {
+    public static func serializeResponseData(response: HTTPURLResponse?, data: Data?, error: Error?) -> AFResult<Data> {
         guard error == nil else { return .failure(error!) }
 
         if let response = response, emptyDataStatusCodes.contains(response.statusCode) { return .success(Data()) }
@@ -356,7 +356,7 @@ extension Request {
         response: HTTPURLResponse?,
         data: Data?,
         error: Error?)
-        -> Result<String>
+        -> AFResult<String>
     {
         guard error == nil else { return .failure(error!) }
 
@@ -486,7 +486,7 @@ extension Request {
         response: HTTPURLResponse?,
         data: Data?,
         error: Error?)
-        -> Result<Any>
+        -> AFResult<Any>
     {
         guard error == nil else { return .failure(error!) }
 
@@ -607,7 +607,7 @@ extension Request {
         response: HTTPURLResponse?,
         data: Data?,
         error: Error?)
-        -> Result<Any>
+        -> AFResult<Any>
     {
         guard error == nil else { return .failure(error!) }
 

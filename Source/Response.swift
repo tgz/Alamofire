@@ -82,7 +82,7 @@ public struct DataResponse<Value> {
     public let data: Data?
 
     /// The result of response serialization.
-    public let result: Result<Value>
+    public let result: AFResult<Value>
 
     /// The timeline of the complete lifecycle of the request.
     public let timeline: Timeline
@@ -108,7 +108,7 @@ public struct DataResponse<Value> {
         request: URLRequest?,
         response: HTTPURLResponse?,
         data: Data?,
-        result: Result<Value>,
+        result: AFResult<Value>,
         timeline: Timeline = Timeline())
     {
         self.request = request
@@ -125,7 +125,7 @@ extension DataResponse: CustomStringConvertible, CustomDebugStringConvertible {
     /// The textual representation used when written to an output stream, which includes whether the result was a
     /// success or failure.
     public var description: String {
-        return result.debugDescription
+        return "\(result)"
     }
 
     /// The debug textual representation used when written to an output stream, which includes the URL request, the URL
@@ -136,7 +136,7 @@ extension DataResponse: CustomStringConvertible, CustomDebugStringConvertible {
         output.append(request != nil ? "[Request]: \(request!.httpMethod ?? "GET") \(request!)" : "[Request]: nil")
         output.append(response != nil ? "[Response]: \(response!)" : "[Response]: nil")
         output.append("[Data]: \(data?.count ?? 0) bytes")
-        output.append("[Result]: \(result.debugDescription)")
+        output.append("[Result]: \(result)")
         output.append("[Timeline]: \(timeline.debugDescription)")
 
         return output.joined(separator: "\n")
@@ -328,7 +328,7 @@ public struct DownloadResponse<Value> {
     public let resumeData: Data?
 
     /// The result of response serialization.
-    public let result: Result<Value>
+    public let result: AFResult<Value>
 
     /// The timeline of the complete lifecycle of the request.
     public let timeline: Timeline
@@ -358,7 +358,7 @@ public struct DownloadResponse<Value> {
         temporaryURL: URL?,
         destinationURL: URL?,
         resumeData: Data?,
-        result: Result<Value>,
+        result: AFResult<Value>,
         timeline: Timeline = Timeline())
     {
         self.request = request
@@ -377,7 +377,7 @@ extension DownloadResponse: CustomStringConvertible, CustomDebugStringConvertibl
     /// The textual representation used when written to an output stream, which includes whether the result was a
     /// success or failure.
     public var description: String {
-        return result.debugDescription
+        return "\(result)"
     }
 
     /// The debug textual representation used when written to an output stream, which includes the URL request, the URL
@@ -391,7 +391,7 @@ extension DownloadResponse: CustomStringConvertible, CustomDebugStringConvertibl
         output.append("[TemporaryURL]: \(temporaryURL?.path ?? "nil")")
         output.append("[DestinationURL]: \(destinationURL?.path ?? "nil")")
         output.append("[ResumeData]: \(resumeData?.count ?? 0) bytes")
-        output.append("[Result]: \(result.debugDescription)")
+        output.append("[Result]: \(result)")
         output.append("[Timeline]: \(timeline.debugDescription)")
 
         return output.joined(separator: "\n")
